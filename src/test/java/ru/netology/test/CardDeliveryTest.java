@@ -1,6 +1,10 @@
 package ru.netology.test;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -12,11 +16,19 @@ import static com.codeborne.selenide.Selenide.*;
 import static ru.netology.data.DataGenerator.*;
 class CardDeliveryTest {
 
+    @BeforeAll
+    static void setUp (){
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
     @BeforeEach
     void openWebBank() {
         open("http://localhost:7777/");
     }
 
+    @AfterAll
+    static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
     @Test
     void testDelivery() {
         String planDate = generateDate(5);
